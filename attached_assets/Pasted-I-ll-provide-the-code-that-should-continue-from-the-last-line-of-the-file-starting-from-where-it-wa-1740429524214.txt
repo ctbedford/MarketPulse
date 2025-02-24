@@ -1,0 +1,56 @@
+I'll provide the code that should continue from the last line of the file, starting from where it was cut off:
+
+```jsx
+                    <tr key={campaign.id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{campaign.name}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{campaign.retailer}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{campaign.brand}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(campaign.startDate).toLocaleDateString()} - {new Date(campaign.endDate).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                        ${campaign.budget.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                        {(campaign.impressions / 1000000).toFixed(1)}M
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                        ${campaign.cpm.toFixed(2)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-right" 
+                          style={{ color: campaign.roas > 4 ? '#4CAF50' : campaign.roas > 3 ? '#FFC107' : '#F44336' }}>
+                        {campaign.roas.toFixed(1)}x
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                        {campaign.salesLift.toFixed(1)}%
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                        ${(campaign.incrementalSales / 1000).toFixed(0)}K
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Footer with export options */}
+      <div className="mt-6 flex justify-end gap-4">
+        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded border border-gray-300 text-sm font-medium">
+          Export to Excel
+        </button>
+        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded border border-gray-300 text-sm font-medium">
+          Export to PDF
+        </button>
+        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded border border-gray-300 text-sm font-medium">
+          Save Dashboard
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default MultiCampaignDashboard;
+```

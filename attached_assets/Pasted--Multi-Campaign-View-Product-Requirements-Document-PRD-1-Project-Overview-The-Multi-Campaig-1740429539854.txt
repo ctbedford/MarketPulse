@@ -1,0 +1,295 @@
+📊 Multi-Campaign View – Product Requirements Document (PRD)
+
+1. Project Overview
+
+The Multi-Campaign View aims to empower brand managers, adtech account managers, shopper marketing managers, Pathformance consultants, and internal engineers to analyze and compare multiple campaigns across various dimensions. This feature enhances data visibility, drives data-backed decisions, and ensures transparency in campaign performance while maintaining system scalability for future enhancements.
+
+2. Objectives
+
+Enable users to view and analyze multiple campaigns side-by-side.
+
+Support granular filtering (by retailer, brand, vendor, event, holiday, geography, etc.)
+
+Provide visualizations that help users identify overlaps, trends, and performance drivers.
+
+Deliver actionable insights without introducing AI or complex measurement algorithms.
+
+Ensure the architecture supports future AI integration without overpromising its immediate inclusion.
+
+3. User Personas & Use Cases
+
+👩‍💼 Brand Manager
+
+Goal: Optimize marketing strategies across 10+ sub-brands, hundreds of SKUs, dozens of retailers, and multiple activation partners.
+
+Use Case:
+
+View all campaigns from the past year.
+
+Filter by retailers, sub-brands, events, holidays, media partners, and more.
+
+Compare campaigns by specific KPIs (e.g., ROAS, incremental sales, impressions).
+
+Analyze single campaigns or aggregated views across sub-brands or regions.
+
+👨‍💻 AdTech Account Manager
+
+Goal: Monitor and report media performance for multiple clients and competing brands.
+
+Use Case:
+
+Aggregate performance across categories or individual clients.
+
+Filter by brand, media partner, or campaign objective.
+
+Compare multiple tactics (including those run by other vendors) to showcase media impact.
+
+🛒 Shopper Marketing Manager
+
+Goal: Optimize marketing efforts for a specific national retailer (e.g., Walmart or Target).
+
+Use Case:
+
+Narrow focus to a single retailer but maintain visibility into brand performance.
+
+Filter by event, region, product line, and vendor.
+
+Compare how different campaigns supported the same retailer over time.
+
+🤝 Pathformance Consultant
+
+Goal: Guide customers through campaign performance while avoiding data misinterpretation.
+
+Use Case:
+
+Display overlapping campaigns to help customers understand combined effects.
+
+Use visual tools (heat maps, overlap charts) to illustrate campaign intersections.
+
+Warn clients when multiple campaigns could be counting incremental sales twice.
+
+🛠️ Engineering Team
+
+Goal: Build scalable, maintainable solutions that support future enhancements.
+
+Use Case:
+
+Design data structures that allow future AI applications without introducing AI now.
+
+Ensure system stability with increased data load from multi-campaign views.
+
+Maintain consistency with existing measurement methodologies.
+
+4. Core Features & Functional Requirements
+
+🔍 Filtering & Search
+
+Campaign Filters: Retailer, Sub-Brand, Event/Holiday, Vendor, Timeframe, Media Type.
+
+Geographic Filters: National, regional, state, DMA.
+
+Performance Metrics: Lift %, ROAS, Incremental $, Impressions, Budget, Test/Control counts.
+
+📊 Data Visualizations
+
+📈 1. Bar Chart – Campaign Performance Comparison
+
+Default View: One bar per campaign on the X-axis with a user-selected performance metric on the Y-axis.
+
+Selectable Metrics: Budget, Impressions, CPM, Campaign Length, Total Sales, ROAS, Sales Lift %, Incremental $, etc.
+
+Filtering Options:
+
+Date Range (Active between specific dates, Start/End dates)
+
+Campaign Tactics
+
+Retailers, Brands, Vendors, Media Partners
+
+Performance thresholds (Top/Bottom 10, etc.)
+
+Sorting Options:
+
+By metric value (e.g., highest to lowest ROAS)
+
+By campaign start date
+
+By campaign length
+
+📉 2. Multi-Line Chart – Campaign Performance Over Time
+
+Default View: Each line represents a campaign, displaying a selected metric over time.
+
+Selectable Metrics: Sales, Incremental $, Sales Lift %, ROAS, Impressions, etc.
+
+Filtering Options:
+
+Time Period selection (weekly, monthly, quarterly)
+
+Retailer, Brand, Media Partner, Tactic
+
+Performance thresholds (e.g., filter out low-performing campaigns)
+
+Features:
+
+Highlight overlapping campaign periods
+
+Zoom into specific time windows for detailed analysis
+
+📋 3. Tabular View – Detailed Campaign Data
+
+Default View: A table listing all campaigns with key performance metrics in columns.
+
+Columns Include: Campaign Name, Retailer, Brand, Start/End Dates, Budget, Impressions, CPM, ROAS, Sales Lift %, Incremental $, Test Store Count, etc.
+
+Filtering & Sorting:
+
+Align filters with other visualizations for consistent data views
+
+Sort by any column (e.g., highest ROAS, lowest budget)
+
+Export Options: CSV, Excel, PDF
+
+🗺️ 4. Geographic Heatmap – Regional Performance Insights
+
+Default View: A heatmap showing regional performance by metrics like Impressions, Budget, Sales, etc.
+
+Data Granularity: National, State, DMA, or Store-Level (if available)
+
+Selectable Metrics:
+
+Impressions
+
+Budget
+
+Total Sales
+
+Incremental Sales
+
+ROAS
+
+Features:
+
+Tooltip pop-ups for regional summaries
+
+Layer multiple metrics (e.g., compare Impressions vs. Sales Lift on the same map)
+
+🤖 AI Widget – Generative AI Dashboard Assistant
+
+Purpose: Provide users with a natural language description of the data visualizations based on active filters and views.
+
+Functionality:
+
+Pop-out AI widget available on the dashboard.
+
+Users can request a full summary of the dashboard or ask specific questions about the data.
+
+The AI will NOT make recommendations or predictive analyses but will instead offer a detailed narrative of the charts and key insights.
+
+Example: “The bar chart shows Campaign A leading in ROAS with 3.5x, while Campaign B had the highest impressions. The geographic heatmap highlights the Midwest as the top-performing region.”
+
+Future-Proofing:
+
+Designed as a stepping stone for future AI integration.
+
+Reinforces user engagement and data comprehension.
+
+5. Wireframe Instructions
+
+Dashboard Layout:
+
+Place the Bar Chart at the top for high-level comparisons.
+
+Include the Multi-Line Chart below for temporal trend analysis.
+
+Position the Tabular View to the right or bottom for granular data.
+
+Include the Geographic Heatmap in a dedicated section or as a selectable tab.
+
+Filter Panel:
+
+Consistent filter options across all visualizations (date range, media partner, retailer, etc.)
+
+Global filter controls that impact all views.
+
+AI Widget Integration:
+
+Pop-out interface on the right side of the dashboard.
+
+Search bar to input natural language questions.
+
+Button for “Generate Full Summary” to create paragraph descriptions of the dashboard.
+
+User Experience Flow:
+
+Users land on the Multi-Campaign View module.
+
+Apply filters → Select metrics → View data visualizations.
+
+AI widget remains accessible for real-time descriptions.
+
+Unified Experience Across Personas:
+
+All user profiles (Brand Manager, AdTech Account Manager, Shopper Marketing Manager) use the same set of visualizations.
+
+Personalization through filters allows each user to customize views based on their unique needs.
+
+6. Risks & Mitigations
+
+Risk
+
+Mitigation
+
+Data Overlap Causing Misinterpretation
+
+Use clear visualizations to highlight overlaps
+
+Increased System Load from Multi-Campaign Views
+
+Optimize data queries and caching
+
+Scope Creep with AI Expectations
+
+Explicitly state that AI is not part of MVP
+
+7. Success Metrics
+
+User Engagement: % of users actively using multi-campaign views within 60 days.
+
+AI Widget Usage: % of users engaging with the AI assistant.
+
+Customer Satisfaction: NPS score from key user groups post-launch.
+
+Error Rate: % of issues related to data inaccuracies or system lag.
+
+8. Timeline & Milestones
+
+Milestone
+
+Date
+
+Requirements Finalization
+
+[Insert Date]
+
+Wireframes & Design Approval
+
+[Insert Date]
+
+MVP Development Start
+
+[Insert Date]
+
+Internal Beta Testing
+
+[Insert Date]
+
+Client Beta Release
+
+[Insert Date]
+
+Full MVP Launch
+
+[Insert Date]
+
+This updated PRD defines a unified user experience across all user personas, includes instructions for building wireframes, and integrates an AI Widget designed to provide generative descriptions of filtered dashboards, supporting the broader goal of future AI enhancements in PathX.
