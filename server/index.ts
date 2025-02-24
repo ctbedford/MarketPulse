@@ -56,9 +56,14 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client
-  const port = 5000;
+  // Parse command line arguments for port
+  const args = process.argv.slice(2);
+  const portArgIndex = args.findIndex(arg => arg === '--port' || arg === '-p');
+  const portFromArgs = portArgIndex !== -1 && args[portArgIndex + 1] ? parseInt(args[portArgIndex + 1], 10) : null;
+
+  // Get port from environment variable or command line args or default to 5001
+  const port = portFromArgs || (process.env.PORT ? parseInt(process.env.PORT, 10) : 5001);
+  
   server.listen({
     port,
     host: "0.0.0.0",
