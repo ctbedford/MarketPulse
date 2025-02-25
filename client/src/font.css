@@ -1,0 +1,28 @@
+/* 
+  Font definitions for Pathformance brand
+  Primary font: Calibri
+*/
+
+/* Calibri is a system font on Windows but not on all systems
+   Adding fallback to similar sans-serif fonts */
+@font-face {
+  font-family: 'Calibri System';
+  src: local('Calibri');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Using a fallback stack of similar fonts */
+:root {
+  font-family: 'Calibri System', 'Carlito', 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+}
+
+/* Apply Calibri to specific elements */
+body,
+input,
+button,
+textarea,
+select {
+  font-family: 'Calibri System', 'Carlito', 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+} 

@@ -1,0 +1,9 @@
+REPLACE WITH ACTUAL LOGO FILES
+
+1. Place your "pathformance-logo-primary.png" here
+2. Place your "pathformance-logo-secondary.png" here
+
+These should be PNG files with transparent backgrounds.
+The application will automatically use them when they're available.
+
+Until then, the SVG fallback will be displayed. 

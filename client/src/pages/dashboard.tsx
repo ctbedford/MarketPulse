@@ -125,56 +125,121 @@ const campaignData: Campaign[] = [
   
   { id: 14, name: 'Back to Sports', retailer: 'Dick\'s Sporting', brand: 'Brand H', subBrand: 'Product Line 10', vendor: 'Vendor U', mediaType: 'Social', event: 'Back to School', region: 'Northeast', startDate: '2024-08-10', endDate: '2024-09-15', budget: 68000, impressions: 2950000, cpm: 23.05, roas: 3.7, salesLift: 12.4, incrementalSales: 251600, testStores: 290, controlStores: 285, conversion: 3.1, engagementRate: 5.2, audienceReach: 1.6, costPerAcquisition: 17.5, mediaChannel: 'Social Media', tactics: ['Facebook Lead Gen', 'Twitter Ads'], targetAudience: 'Athletes & Parents', category: 'Sporting Goods' },
   
-  { id: 15, name: 'Halloween', retailer: 'Target', brand: 'Brand I', subBrand: 'Product Line 11', vendor: 'Vendor T', mediaType: 'Display', event: 'Holiday', region: 'Midwest', startDate: '2024-10-01', endDate: '2024-10-31', budget: 90000, impressions: 3900000, cpm: 23.08, roas: 4.1, salesLift: 15.7, incrementalSales: 369000, testStores: 350, controlStores: 345, conversion: 3.4, engagementRate: 3.3, audienceReach: 2.3, costPerAcquisition: 16.1, mediaChannel: 'Digital', tactics: ['Interactive Banners', 'Page Takeovers'], targetAudience: 'Parents & Children', category: 'Seasonal & Costumes' }
+  { id: 15, name: 'Halloween', retailer: 'Target', brand: 'Brand I', subBrand: 'Product Line 11', vendor: 'Vendor T', mediaType: 'Display', event: 'Holiday', region: 'Midwest', startDate: '2024-10-01', endDate: '2024-10-31', budget: 90000, impressions: 3900000, cpm: 23.08, roas: 4.1, salesLift: 15.7, incrementalSales: 369000, testStores: 350, controlStores: 345, conversion: 3.4, engagementRate: 3.3, audienceReach: 2.3, costPerAcquisition: 16.1, mediaChannel: 'Digital', tactics: ['Interactive Banners', 'Page Takeovers'], targetAudience: 'Parents & Children', category: 'Seasonal & Costumes' },
+  
+  // Adding new campaigns with more extreme values to ensure all metrics have good range
+  { id: 16, name: 'High Test Ratio', retailer: 'Walgreens', brand: 'Brand J', subBrand: 'Product Line 12', vendor: 'Vendor S', mediaType: 'Display', event: 'Fall', region: 'Southeast', startDate: '2024-09-01', endDate: '2024-09-30', budget: 110000, impressions: 4700000, cpm: 23.40, roas: 4.2, salesLift: 17.1, incrementalSales: 462000, testStores: 750, controlStores: 250, conversion: 3.8, engagementRate: 3.7, audienceReach: 2.5, costPerAcquisition: 15.8, mediaChannel: 'Digital', tactics: ['Data-Driven Creative', 'Audience Targeting'], targetAudience: 'Health Conscious', category: 'Health & Wellness' },
+  
+  { id: 17, name: 'High Impressions', retailer: 'Costco', brand: 'Brand K', subBrand: 'Product Line 13', vendor: 'Vendor R', mediaType: 'Video', event: 'Holiday', region: 'National', startDate: '2024-12-01', endDate: '2024-12-25', budget: 250000, impressions: 15000000, cpm: 16.67, roas: 5.5, salesLift: 22.6, incrementalSales: 1375000, testStores: 620, controlStores: 600, conversion: 5.1, engagementRate: 4.8, audienceReach: 7.2, costPerAcquisition: 9.3, mediaChannel: 'Video', tactics: ['Premium Video', 'Advanced TV'], targetAudience: 'Bulk Shoppers', category: 'Multiple' }
 ];
 
 // Enhanced time series data with proper week dates and campaign values
-const generateTimeSeriesData = (): WeekData[] => {
-  // Generate weeks from Jan to Dec 2024
-  const weeks: WeekData[] = [];
+const generateTimeSeriesData = () => {
+  const timeSeriesData: any[] = [];
   const startDate = new Date('2024-01-01');
-  for (let i = 0; i < 52; i++) {
-    const weekStartDate = new Date(startDate);
-    weekStartDate.setDate(startDate.getDate() + (i * 7));
-    const weekEndDate = new Date(weekStartDate);
-    weekEndDate.setDate(weekStartDate.getDate() + 6);
-    
-    const weekLabel = `W${i+1}: ${weekStartDate.toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}`;
-    
-    const weekData: WeekData = {
-      week: weekLabel,
-      date: weekStartDate,
-      endDate: weekEndDate
+  const endDate = new Date('2024-12-31');
+  let currentDate = new Date(startDate);
+  
+  // Generate weekly data points
+  let week = 1;
+  while (currentDate <= endDate) {
+    const weekData: any = {
+      date: new Date(currentDate).toISOString(),
+      week: `Week ${week}`
     };
     
-    // Initialize all campaigns to 0
+    let totalRoas = 0;
+    let totalSalesLift = 0;
+    let totalIncrementalSales = 0;
+    let totalImpressions = 0;
+    let totalEngagement = 0;
+    let totalAudienceReach = 0;
+    let overlapValue = 0;
+    
+    // Add data for each campaign that is active in this week
     campaignData.forEach(campaign => {
-      weekData[campaign.name] = 0;
-    });
-    
-    weeks.push(weekData);
-  }
-  
-  // Add campaign data to each week
-  campaignData.forEach(campaign => {
-    const campaignStart = new Date(campaign.startDate);
-    const campaignEnd = new Date(campaign.endDate);
-    
-    // Calculate weekly values based on campaign duration
-    const durationInDays = (campaignEnd.getTime() - campaignStart.getTime()) / (1000 * 60 * 60 * 24);
-    const weeksActive = Math.ceil(durationInDays / 7);
-    const weeklyValue = campaign.incrementalSales / weeksActive;
-    
-    weeks.forEach(week => {
-      if (week.date >= campaignStart && week.date <= campaignEnd) {
-        week[campaign.name] = Math.round(weeklyValue / 1000); // Convert to $K
+      const campaignStart = new Date(campaign.startDate);
+      const campaignEnd = new Date(campaign.endDate);
+      
+      // Check if campaign is active in this week
+      if (currentDate >= campaignStart && currentDate <= campaignEnd) {
+        // Create random fluctuation between 0.85 and 1.15 for natural variation
+        const fluctuation = 0.85 + Math.random() * 0.3;
+        
+        // Add campaign-specific data with some weekly fluctuation
+        const campaignRoas = campaign.roas * fluctuation;
+        const campaignSalesLift = campaign.salesLift * fluctuation;
+        const campaignIncrementalSales = campaign.incrementalSales * fluctuation;
+        const campaignImpressions = (campaign.impressions / 12) * fluctuation; // Weekly impressions
+        const campaignEngagement = campaign.engagementRate * fluctuation;
+        const campaignReach = campaign.audienceReach * fluctuation;
+        
+        // Add to weekly totals
+        totalRoas += campaignRoas;
+        totalSalesLift += campaignSalesLift;
+        totalIncrementalSales += campaignIncrementalSales;
+        totalImpressions += campaignImpressions;
+        totalEngagement += campaignEngagement;
+        totalAudienceReach += campaignReach;
+        
+        // Create campaign-specific weekly metric
+        weekData[`${campaign.name}`] = campaignRoas; // Default to ROAS
+        
+        // Add metrics based on selected type
+        weekData[`${campaign.name}_roas`] = campaignRoas;
+        weekData[`${campaign.name}_salesLift`] = campaignSalesLift;
+        weekData[`${campaign.name}_incrementalSales`] = campaignIncrementalSales / 1000; // Convert to K
+        weekData[`${campaign.name}_impressions`] = campaignImpressions / 1000000; // Convert to M
+        weekData[`${campaign.name}_engagement`] = campaignEngagement;
+        weekData[`${campaign.name}_reach`] = campaignReach;
+        weekData[`${campaign.name}_cpm`] = campaign.cpm * fluctuation;
+        weekData[`${campaign.name}_conversion`] = campaign.conversion * fluctuation;
+        weekData[`${campaign.name}_budget`] = (campaign.budget / 12) * fluctuation / 1000; // Weekly budget in K
+        weekData[`${campaign.name}_costPerAcquisition`] = campaign.costPerAcquisition * fluctuation;
+        weekData[`${campaign.name}_testControlRatio`] = (campaign.testStores / Math.max(1, campaign.controlStores)) * fluctuation;
       }
     });
-  });
+    
+    // Calculate overlap value (simulates campaign overlap effects)
+    // Higher when multiple campaigns run simultaneously
+    const activeCampaigns = campaignData.filter(campaign => {
+      const campaignStart = new Date(campaign.startDate);
+      const campaignEnd = new Date(campaign.endDate);
+      return currentDate >= campaignStart && currentDate <= campaignEnd;
+    });
+    
+    if (activeCampaigns.length > 1) {
+      overlapValue = (activeCampaigns.length * 0.5) * (0.9 + Math.random() * 0.2);
+    }
+    
+    // Add weekly totals and helper values
+    weekData.Total = totalRoas; // Default total is ROAS
+    weekData.Overlap = overlapValue;
+    
+    // Add totals for different metrics
+    weekData.Total_roas = totalRoas;
+    weekData.Total_salesLift = totalSalesLift;
+    weekData.Total_incrementalSales = totalIncrementalSales / 1000; // Convert to K
+    weekData.Total_impressions = totalImpressions / 1000000; // Convert to M
+    weekData.Total_engagement = totalEngagement;
+    weekData.Total_reach = totalAudienceReach;
+    weekData.Total_conversion = activeCampaigns.reduce((sum, camp) => sum + camp.conversion, 0) / Math.max(1, activeCampaigns.length);
+    weekData.Total_budget = activeCampaigns.reduce((sum, camp) => sum + camp.budget, 0) / 12 / 1000; // Weekly budget in K
+    weekData.Total_cpm = activeCampaigns.reduce((sum, camp) => sum + camp.cpm, 0) / Math.max(1, activeCampaigns.length);
+    weekData.Total_costPerAcquisition = activeCampaigns.reduce((sum, camp) => sum + camp.costPerAcquisition, 0) / Math.max(1, activeCampaigns.length);
+    weekData.Total_testControlRatio = activeCampaigns.reduce((sum, camp) => sum + (camp.testStores / Math.max(1, camp.controlStores)), 0) / Math.max(1, activeCampaigns.length);
+    
+    timeSeriesData.push(weekData);
+    
+    // Advance to next week
+    currentDate.setDate(currentDate.getDate() + 7);
+    week++;
+  }
   
-  return weeks;
+  return timeSeriesData;
 };
 
+// Generate and store the time series data
 const timeSeriesData = generateTimeSeriesData();
 
 // Enhanced regional data with more metrics
@@ -198,24 +263,24 @@ const heatMapData = [
 ];
 
 const regionColors: Record<string, string> = {
-  'Northeast': '#003f5c',
-  'Midwest': '#7a5195', 
-  'South': '#ef5675',
-  'West': '#ffa600',
-  'Southeast': '#58508d',
-  'National': '#bc5090'
+  'Northeast': '#00D6D0', // Pathformance teal
+  'Midwest': '#243E76',   // Pathformance navy
+  'South': '#FFF17A',     // Pathformance yellow
+  'West': '#83909B',      // Pathformance gray
+  'Southeast': '#00A7A3', // Lighter teal
+  'National': '#1B306C'   // Darker navy
 };
 
-// Define heatmap colors based on performance
+// Define heatmap colors based on performance using Pathformance palette
 const getHeatmapColor = (value: number) => {
-  if (value >= 5.0) return '#1a9850'; // High performance - green
-  if (value >= 4.5) return '#66bd63'; // Very good performance - lighter green
-  if (value >= 4.0) return '#a6d96a'; // Good performance - light green
-  if (value >= 3.5) return '#d9ef8b'; // Average performance - yellow-green
-  if (value >= 3.0) return '#fee08b'; // Below average - yellow
-  if (value >= 2.5) return '#fdae61'; // Poor performance - light orange
-  if (value >= 2.0) return '#f46d43'; // Very poor performance - orange
-  return '#d73027'; // Extremely poor performance - red
+  if (value >= 5.0) return '#00D6D0'; // Highest - teal
+  if (value >= 4.5) return '#13B1AC'; // Very high - slightly darker teal
+  if (value >= 4.0) return '#26918D'; // High - even darker teal
+  if (value >= 3.5) return '#243E76'; // Above average - navy
+  if (value >= 3.0) return '#3A527D'; // Average - lighter navy
+  if (value >= 2.5) return '#536683'; // Below average - even lighter navy
+  if (value >= 2.0) return '#FFF17A'; // Poor - yellow
+  return '#83909B'; // Very poor - gray
 };
 
 // Define all the filters with expanded options
@@ -254,7 +319,7 @@ const metricCategories = [
   { id: 'methodology', name: 'Methodology', metrics: ['testControlRatio'] }
 ];
 
-// Type for bar chart data
+// Type for bar chart data item
 interface BarChartDataItem {
   name: string;
   value: number;
@@ -316,6 +381,9 @@ const Dashboard = () => {
   
   const [selectedDetailsCampaigns, setSelectedDetailsCampaigns] = useState<number[]>([]);
   const [showDetailsCampaignSelector, setShowDetailsCampaignSelector] = useState(false);
+  
+  // Add missing state variable for time series data keys
+  const [timeSeriesDataKeys, setTimeSeriesDataKeys] = useState<Array<{dataKey: string, color: string, name: string}>>([]);
   
   const { toast } = useToast();
 
@@ -897,6 +965,40 @@ ${overlaps.length > 0 ?
     });
   };
 
+  // Function to handle time series data update when metric changes
+  const updateTimeSeriesData = (metric: string) => {
+    setTimeSeriesMetric(metric);
+    
+    // Clear all existing line data keys
+    setTimeSeriesDataKeys([]);
+    
+    // Get all active campaigns based on filter
+    const activeCampaigns = performanceFilteredCampaigns.filter(campaign => 
+      selectedTimeSeriesCampaigns.length === 0 || selectedTimeSeriesCampaigns.includes(campaign.id)
+    );
+    
+    // Add a line for each selected campaign
+    const newDataKeys = activeCampaigns.map(campaign => ({
+      dataKey: `${campaign.name}_${metric}`,
+      color: `hsl(${(campaignData.findIndex(c => c.id === campaign.id) * 25) % 360}, 70%, 50%)`,
+      name: campaign.name
+    }));
+    
+    // Update the data keys to trigger re-render
+    setTimeSeriesDataKeys(newDataKeys);
+  };
+
+  // Helper function to handle metric selection change
+  const handleMetricChange = (metric: string) => {
+    setSelectedMetric(metric);
+    
+    // Update the time series chart when the global metric changes
+    updateTimeSeriesData(metric);
+    
+    // Update regional and audience view metrics
+    setHeatmapMetric(metric);
+  };
+
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-[1800px] mx-auto space-y-4">
@@ -1330,19 +1432,19 @@ ${overlaps.length > 0 ?
                 </Popover>
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="h-[400px]">
+            <CardContent className="p-0 pb-4"> {/* Removed padding and added only bottom padding */}
+              <div className="h-[600px]"> {/* Increased height to fill the card better */}
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart 
                     data={getBarChartData()}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 100 }} // Increased bottom margin for labels
+                    margin={{ top: 20, right: 30, left: 20, bottom: 70 }} // Increased bottom margin for labels
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
                       dataKey="name" 
                       angle={-35} 
                       textAnchor="end" 
-                      height={100} // Increased height for labels
+                      height={80} // Increased height for labels
                       tick={{ fontSize: 12 }} // Increased font size
                       interval={0} // Show all labels
                     />
@@ -1509,8 +1611,8 @@ ${overlaps.length > 0 ?
                 </Popover>
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="h-[400px]">
+            <CardContent className="p-0 pb-4"> {/* Removed padding and added only bottom padding */}
+              <div className="h-[500px]"> {/* Increased height to fill the card better */}
                 <ResponsiveContainer width="100%" height="100%">
                   <ComposedChart 
                     data={timeSeriesData.filter(item => {
@@ -1519,7 +1621,7 @@ ${overlaps.length > 0 ?
                       const endDate = new Date(timeSeriesDateRange.end);
                       return itemDate >= startDate && itemDate <= endDate;
                     })}
-                    margin={{ top: 20, right: 30, bottom: 100, left: 30 }} // Increased margins for better spacing
+                    margin={{ top: 20, right: 30, bottom: 70, left: 30 }} // Increased margins for better spacing
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
@@ -1527,7 +1629,7 @@ ${overlaps.length > 0 ?
                       interval={5} // Show fewer x-axis labels
                       angle={-35} 
                       textAnchor="end" 
-                      height={100} // Increased height for labels
+                      height={80} // Increased height for labels
                       tick={{ fontSize: 12 }} // Increased font size
                     />
                     <YAxis 
@@ -1717,8 +1819,8 @@ ${overlaps.length > 0 ?
                     </Popover>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                <CardContent className="p-4 pt-2"> {/* Adjusted padding for consistency */}
+                  <div className="grid grid-cols-2 gap-4">
                     {regionMetrics.map(region => {
                       // Get value based on selected heatmap metric
                       let metricValue;
@@ -1790,7 +1892,7 @@ ${overlaps.length > 0 ?
                     Get insights about your campaign data
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 pt-2"> {/* Adjusted padding for consistency */}
                   <div className="space-y-4">
                     <div className="rounded-lg bg-muted/50 p-4">
                       {isGeneratingInsights ? (
@@ -1922,7 +2024,7 @@ ${overlaps.length > 0 ?
                 </Popover>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0"> {/* Removed padding to maximize table space */}
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>

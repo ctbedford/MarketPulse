@@ -3,11 +3,81 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Pathformance Brand Colors */
+    --pathformance-teal: 179deg 100% 42%; /* #00D6D0 */
+    --pathformance-navy: 220deg 54% 30%; /* #243E76 */
+    --pathformance-yellow: 56deg 100% 74%; /* #FFF17A */
+    --pathformance-gray: 210deg 11% 56%; /* #83909B */
+    
+    /* Base colors using Pathformance palette */
+    --background: 0 0% 100%;
+    --foreground: 220 54% 30%;
+    
+    /* Card colors */
+    --card: 0 0% 100%;
+    --card-foreground: 220 54% 30%;
+    
+    /* Popover colors */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 54% 30%;
+    
+    /* Primary colors (Teal) */
+    --primary: 179 100% 42%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary colors (Navy) */
+    --secondary: 220 54% 30%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Muted colors */
+    --muted: 210 11% 96%;
+    --muted-foreground: 215 16% 47%;
+    
+    /* Accent colors */
+    --accent: 179 100% 42%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Destructive colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Border and input colors */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 179 100% 42%;
+    
+    /* Chart colors */
+    --chart-1: 179 100% 42%;
+    --chart-2: 220 54% 30%;
+    --chart-3: 56 100% 74%;
+    --chart-4: 210 11% 56%;
+    --chart-5: 179 70% 60%;
+    
+    /* Sidebar colors */
+    --sidebar-background: 220 54% 30%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 179 100% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 179 100% 42%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 179 100% 42%;
+    
+    /* Radius */
+    --radius: 0.5rem;
+  }
+  
   * {
     @apply border-border;
   }
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+  }
+  
+  /* Font style - Calibri is the primary font */
+  body, input, button, textarea, select {
+    font-family: Calibri, sans-serif;
   }
 }
